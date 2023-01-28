@@ -10,6 +10,6 @@ RUN sbt assembly
 FROM openjdk:17-alpine
 
 WORKDIR /app
-COPY --from=build /ServerApplication/target/scala-2.13/otus_ms_scala-assembly-0.0.1.jar /app
+COPY --from=build /ServerApplication/target/scala-2.13/otus_ms_scala-assembly-0.0.3.jar /app/otus_ms_scala.jar
 
-ENTRYPOINT ["java", "-jar", "otus_ms_scala-assembly-0.0.1.jar"]
+ENTRYPOINT ["java", "-jar", "otus_ms_scala.jar"]

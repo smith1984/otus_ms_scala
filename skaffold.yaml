@@ -1,0 +1,14 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata:
+  name: otus-ms-scala
+build:
+  artifacts:
+  - image: smith1984/otus_ms_scala
+    docker:
+      dockerfile: Dockerfile
+manifests:
+  rawYaml:
+  - k8s/deployment.yaml
+  - k8s/ingress.yaml
+  - k8s/service.yaml
