@@ -1,1 +1,1 @@
-kubectl apply -f ./k8s
+kubectl delete -f ./k8s
