@@ -10,5 +10,11 @@ object BackOfficeAPI {
   val api = Http.collectZIO[Request] {
     case Method.GET -> !! / "health" =>
         ZIO.succeed(Response.json("""{"status": "OK"}"""))
+
+    case Method.GET -> !! =>
+      ZIO.succeed(Response.text(s"Hello word from ${sys.env("HOSTNAME")}"))
+
+    case Method.GET -> !! / "version" =>
+      ZIO.succeed(Response.json("""{"version": "0.0.3"}"""))
       }
 }
