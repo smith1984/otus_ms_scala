@@ -1,0 +1,7 @@
+global:
+  postgresql:
+    auth:
+      postgresPassword: "vafs"
+      username: "vafs"
+      password: "vafs"
+      database: "vafs_backoffice"
