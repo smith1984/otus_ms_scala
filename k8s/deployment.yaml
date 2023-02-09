@@ -14,20 +14,36 @@ spec:
     spec:
       containers:
         - name: hello
-          image: smith1984/otus_ms_scala:0.0.3
+          image: smith1984/otus_ms_scala:0.0.4
           ports:
             - name: web
-              containerPort: 8000
+              containerPort: 8083
           livenessProbe:
             httpGet:
-              port: 8000
+              port: 8083
               path: /health
             initialDelaySeconds: 10
             periodSeconds: 5
             timeoutSeconds: 2
           readinessProbe:
             httpGet:
-              port: 8000
+              port: 8083
               path: /health
             initialDelaySeconds: 10
             periodSeconds: 5
+          volumeMounts:
+            - name: config
+              mountPath: "/app/app.conf"
+              subPath: "app.conf"
+              readOnly: true
+            - name: secret
+              mountPath: "/app/secrets.conf"
+              subPath: "secrets.conf"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: config-application
+        - name: secret
+          secret:
+            secretName: secrets-application

@@ -1,12 +1,6 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  annotations:
-    nginx.ingress.kubernetes.io/configuration-snippet: |
-      rewrite ^/health/?$ /health break;
-      rewrite ^/version/?$ /version break;
-      rewrite ^/otusapp/([A-Za-z]+)/* /hello/$1/test break;
-      return 404;
   name: hello-ingress
 spec:
   rules:
