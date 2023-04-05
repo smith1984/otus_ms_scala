@@ -32,7 +32,7 @@ object UserRepository {
 
     override def find(id: Long): QIO[Option[User]] = ctx.run(
       userSchema.filter(_.id == lift(id)).take(1)
-    ).map(_.headOption).debug
+    ).map(_.headOption)
 
     override def insert(userDTO: UserDTO): QIO[Unit] = ctx.run(
       userSchema.insert(lift(User.from(0, userDTO))).returningGenerated(_.id)

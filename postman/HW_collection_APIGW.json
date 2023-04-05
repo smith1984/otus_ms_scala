@@ -1,0 +1,634 @@
+{
+	"info": {
+		"_postman_id": "d2a0dc57-68ad-46da-87d0-e96c9d890a15",
+		"name": "HW collection APIGW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25545992"
+	},
+	"item": [
+		{
+			"name": "register user1: smith150384",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create user 1\", function(){",
+							"pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"smith150384\", \"firstName\": \"Yuriy\", \"lastName\": \"Petrov\", \"email\": \"smith1984@com.com\", \"phone\": \"+77777777778\"}"
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read user1 no_auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read user 1 no auth\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Read user 1 no auth contains text\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"username\");",
+							"    pm.expect(pm.response.text()).to.include(\"password\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user1 no_auth",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update user 1 no auth\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Update user 1 no auth contains text\", function(){",
+							"    pm.expect(pm.response.text()).to.include(\"username\");",
+							"    pm.expect(pm.response.text()).to.include(\"password\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"smith150384\", \"firstName\": \"Yaroslav\", \"lastName\": \"Petrov\", \"email\": \"smith1984@com.com\", \"phone\": \"+77777777777\"}"
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user 1\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Login user 1 equil text\", function(){",
+							"    pm.response.to.have.body(\"Logged in\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "smith150384",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/auth/login",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read user1 auth user1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read auth user 1 status code 200\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Read auth user 1 equil body\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.id).to.eql(1);",
+							"pm.expect(responseJson.username).to.eql(\"smith150384\");",
+							"pm.expect(responseJson.firstName).to.eql(\"Yuriy\");",
+							"pm.expect(responseJson.lastName).to.eql(\"Petrov\");",
+							"pm.expect(responseJson.email).to.eql(\"smith1984@com.com\");",
+							"pm.expect(responseJson.phone).to.eql(\"+77777777778\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user1 auth user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update auth user 1 status code 200\", function(){",
+							"pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"smith150384\", \"firstName\": \"Yaroslav\", \"lastName\": \"Petrov\", \"email\": \"smith1984@com.com\", \"phone\": \"+77777777777\"}"
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read updated user1 auth user1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read updated auth user 1 status code 200\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Read updated auth user 1 equil body\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.id).to.eql(1);",
+							"pm.expect(responseJson.username).to.eql(\"smith150384\");",
+							"pm.expect(responseJson.firstName).to.eql(\"Yaroslav\");",
+							"pm.expect(responseJson.lastName).to.eql(\"Petrov\");",
+							"pm.expect(responseJson.email).to.eql(\"smith1984@com.com\");",
+							"pm.expect(responseJson.phone).to.eql(\"+77777777777\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Logout user 1\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Logout user 1 equil text\", function(){",
+							"    pm.response.to.have.body(\"Cya\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/auth/logout",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "register user2: smith1503",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create user 2\", function(){",
+							"pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"smith1503\", \"firstName\": \"Ivan\", \"lastName\": \"Petrov\", \"email\": \"smith1984@com.com\", \"phone\": \"+77777777778\"}"
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login user 2\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Login user 2 equil text\", function(){",
+							"    pm.response.to.have.body(\"Logged in\")",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "smith1503",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/auth/login",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user1 auth user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update profile user 1 auth user 2  status code 200\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Update profile user 1 auth user 2  equil body\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.code).to.eql(5);",
+							"pm.expect(responseJson.message).to.eql(\"Access denied\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"smith150384\", \"firstName\": \"Yaroslav\", \"lastName\": \"Petrov\", \"email\": \"smith1984@com.com\", \"phone\": \"+77777777777\"}"
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "read updated user1 auth user2",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Read profile user 1 auth user 2  status code 200\", function(){",
+							"pm.response.to.have.status(403)",
+							"});",
+							"",
+							"pm.test(\"Read profile user 1 auth user 2  equil body\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.code).to.eql(5);",
+							"pm.expect(responseJson.message).to.eql(\"Access denied\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete user1 auth user2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete profile user 1 auth user 2  status code 200\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Delete profile user 1 auth user 2  equil body\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.code).to.eql(5);",
+							"pm.expect(responseJson.message).to.eql(\"Access denied\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}:{{basePort}}/api/v1/user/1",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"port": "{{basePort}}",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
