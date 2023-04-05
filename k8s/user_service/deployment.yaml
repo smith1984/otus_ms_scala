@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: hello-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: hello-app
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: hello
-          image: smith1984/otus_ms_scala:0.0.4
+          image: smith1984/otus_ms_scala:0.0.5
           ports:
             - name: web
               containerPort: 8083
