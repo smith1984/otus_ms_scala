@@ -11,27 +11,20 @@
 
 
 ## Описание
-![arch_svcs](./img/arch.png)
+Реализация идемпотентности для метода создания заказа в API.
 
+Используемый паттерн - "Ключ идемпотентности".
+
+Для реализации идемпотентности взаимодействие между клиентом и сервером происходит с передачей клиента ключа идемпотентности.
+Сервер проверяет наличие заказа с таким ключом, если такого заказа не было, то он сохраняется и передаётся номер заказа.
+В противном случае возникает ошибка дублирования заказа.
 
 ## Разворачивание инфраструктуры и сервисов
 Выполнить
 > sh ./install.sh
 
-Дождаться поднятие istio-ingressgateway
-Проверить можно выполнив
-> kubectl get svc -n istio-system 
-
-Результат
-![svc istio-ingress](./img/istio-ingress.png)
-
-Так как minikube не позволяет напрямую работать c load balancer, поэтому необходимо записать порт доступа к istio-ingressgateway выполнив команду
-> ISTIO_PORT=$(kubectl get svc istio-ingressgateway -o 'jsonpath={.spec.ports[1].nodePort}' -n istio-system)
-
-Или определить его вручную, значение должно совпадать с портом матчинга на 80 ингресса (результат запроса выше)
-
 ## Тестирование
-> newman run ./postman/HW_collection_APIGW.json --env-var "baseUrl=arch.homework" --env-var "basePort=$ISTIO_PORT"
+> newman run ./postman_test/order_service.postman_collection.json
 
 ## Удаление инфраструктуры и сервисов
 > sh ./delete.sh

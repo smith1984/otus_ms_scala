@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "b4758b2e-99ec-4618-85d7-800fafdbee1d",
+		"name": "Order service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25545992"
+	},
+	"item": [
+		{
+			"name": "App version",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/version",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"version"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Create order\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.orderId).to.eql(\"1\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-request-id",
+						"value": "dxfbdnsfgmgdhfnbfcnfgnf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"qwerty-12345\", \n\t\"price\": \"4567\"}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order order with the same request-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Create order\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.message).to.include(\"duplicate key value violates unique constraint\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-request-id",
+						"value": "dxfbdnsfgmgdhfnbfcnfgnf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"1234\", \n\t\"price\": \"4567\"}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create order order with new request-id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Create order order with new request-id\", function(){",
+							"pm.response.to.have.status(200)",
+							"});",
+							"",
+							"pm.test(\"Create order order with new request-id\", function(){",
+							"const responseJson = pm.response.json();",
+							"pm.expect(responseJson.orderId).to.eql(\"3\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-request-id",
+						"value": "dxfbdnsfgmgdhfnbf",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"number\": \"qwerty-789\", \n\t\"price\": \"7654\"}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/order",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show all orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Show all orders\", function(){",
+							"pm.response.to.have.status(200)",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{baseUrl}}/api/v1/orders",
+					"protocol": "http",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"tests[\"[INFO] Request: \" + (('data' in request) ? request['data'] : '') ] = true;",
+					"tests[\"[INFO] Response: \" + responseBody] = true;"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "arch.homework",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,35 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  1
+       author:  mppetrov
+       changes:
+         -  createTable:
+              tableName:  order
+              columns:
+                -  column:
+                     name:  id
+                     type:  bigint
+                     autoIncrement:  true
+                     constraints:
+                       primaryKey:  true
+                       nullable:  false
+                -  column:
+                     name:  number
+                     type:  varchar2(30)
+                -  column:
+                     name:  price
+                     type:  bigint
+                -  column:
+                     name:  created_at
+                     type:  datetime
+                     constraints:
+                       nullable: false
+                -  column:
+                     name:  updated_at
+                     type:  datetime
+                -  column:
+                     name:  request_id
+                     type:  varchar2(30)
+                     constraints:
+                       unique: true
+                       nullable: false

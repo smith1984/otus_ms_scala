@@ -1,10 +1,10 @@
-ThisBuild / version := "0.0.5"
+ThisBuild / version := "0.0.1"
 
 ThisBuild / scalaVersion := "2.13.10"
 
 lazy val root = (project in file("."))
   .settings(
-    name             := "otus_ms_scala",
+    name := "otus_ms_scala_srv_order",
     idePackagePrefix := Some("ru.beeline.vafs")
   )
 
@@ -14,8 +14,6 @@ lazy val ZioVersion       = "1.0.4"
 lazy val CirceVersion     = "0.14.2"
 lazy val ZIOHttpVersion   = "1.0.0.0-RC27"
 lazy val QuillVersion     = "3.12.0"
-lazy val LiquibaseVersion = "4.19.0"
-lazy val snakeYamlVersion = "1.33"
 
 libraryDependencies ++= Seq(
   "dev.zio"       %% "zio"                 % ZioVersion,

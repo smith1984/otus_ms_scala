@@ -1,25 +1,18 @@
 kubectl apply -f ./k8s/namespaces.yaml
+kubectl config set-context --current --namespace=otus-ms-hw-idempotency
 
-kubectl config set-context --current --namespace=otus-ms-hw-apigw
-
-helm install postgresql bitnami/postgresql -n otus-ms-hw-apigw -f ./helm/infra/values.yaml
-kubectl create cm config-migration-changelog -n otus-ms-hw-apigw --from-file=./helm/infra/changelog.yaml
-kubectl create cm config-migration-properties -n otus-ms-hw-apigw --from-file=./helm/infra/liquibase.properties
-
+helm install postgresql bitnami/postgresql -f ./k8s/postgres/values.yaml
+kubectl create cm config-migration-changelog --from-file=./k8s/postgres/changelog.yaml
+kubectl create cm config-migration-properties --from-file=./k8s/postgres/liquibase.properties
 sleep 10
-kubectl apply -n otus-ms-hw-apigw -f ./helm/infra/job.yaml
+kubectl apply -f ./k8s/postgres/job.yaml
 sleep 10
 
-kubectl create cm config-application -n otus-ms-hw-apigw --from-file=./k8s/user_service/app.conf
-kubectl create secret generic secrets-application -n otus-ms-hw-apigw --from-file=./k8s/user_service/secrets.conf
+kubectl create cm config-application -n otus-ms-hw-idempotency --from-file=./k8s/order_service/app.conf
+kubectl create secret generic secrets-application -n otus-ms-hw-idempotency --from-file=./k8s/order_service/secrets.conf
+kubectl apply -n otus-ms-hw-idempotency -f ./k8s/order_service/deployment.yaml
+kubectl apply -n otus-ms-hw-idempotency -f ./k8s/order_service/service.yaml
 
-kubectl apply -n otus-ms-hw-apigw -f ./k8s/user_service/deployment.yaml
-kubectl apply -n otus-ms-hw-apigw -f ./k8s/user_service/service.yaml
-kubectl apply -n otus-ms-hw-apigw -f ./k8s/auth_service/deployment.yaml
-kubectl apply -n otus-ms-hw-apigw -f ./k8s/auth_service/service.yaml
-
-istioctl operator init --watchedNamespaces istio-system --operatorNamespace istio-operator
-kubectl apply -f ./k8s/istio/istio.yaml
-kubectl apply -n otus-ms-hw-apigw -f ./k8s/istio/routes.yaml
-kubectl apply -f ./k8s/istio/auth.yaml
-
+helm install -n otus-ms-hw-idempotency nginx ingress-nginx/ingress-nginx -f ./k8s/nginx/nginx-ingress.yaml
+sleep 15
+kubectl apply -n otus-ms-hw-idempotency -f ./k8s/order_service/ingress.yaml

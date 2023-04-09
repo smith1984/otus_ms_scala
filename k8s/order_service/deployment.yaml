@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order-app
+  template:
+    metadata:
+      labels:
+        app: order-app
+    spec:
+      containers:
+        - name: hello
+          image: smith1984/otus_ms_scala_srv_order:0.0.1
+          ports:
+            - name: web
+              containerPort: 8081
+          livenessProbe:
+            httpGet:
+              port: 8081
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+          readinessProbe:
+            httpGet:
+              port: 8081
+              path: /health
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - name: config
+              mountPath: "/app/app.conf"
+              subPath: "app.conf"
+              readOnly: true
+            - name: secret
+              mountPath: "/app/secrets.conf"
+              subPath: "secrets.conf"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: config-application
+        - name: secret
+          secret:
+            secretName: secrets-application
